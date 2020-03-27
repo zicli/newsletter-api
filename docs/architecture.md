@@ -18,8 +18,12 @@ This app aims at creating a simple and dynamic newsletter that can be rivaled wi
 - Admin can edit a newsletter.
 - Users/Admin can view all newsletter.
 - Users/Admin can view a single newsletter.
-- Users can comment on a newsletter.
-- Users can like a newsletter.
+
+## Stack
+Server : Express
+Api : GraphQl
+Database: postgres
+Test: mocha chai
 
 ### Data Specifications
 These specifications are open and subject to change.
@@ -28,6 +32,8 @@ These specifications are open and subject to change.
 // admin
 {
   "id": INTEGER,
+  "firstName": STRING,
+  "lastName": STRING,
   "username": STRING,
   "email": STRING,
   "password": STRING,
@@ -42,29 +48,11 @@ These specifications are open and subject to change.
   "header_pic": STRING,
   "sub_heading": STRING,
   "description": STRING,
-  "content": STRING,
+  "content": TEXT,
   "featured_pics": [STRING],
   "author": STRING,
   "createdAt": DATE,
   "updatedAt": DATE
 }
 
-// comment
-{
-  "id": INTEGER,
-  "name": STRING,
-  "newsletterId": INTEGER, //association with newsletter.id
-  "content": STRING,
-  "createdAt": DATE,
-  "updatedAt": DATE
-}
-
-// likes
-{
-  "id": INTEGER,
-  "likes": NUMBER,
-  "newsletterId": INTEGER, //association with newsletter.id
-  "createdAt": DATE,
-  "updatedAt": DATE
-}
 ```
