@@ -9,6 +9,7 @@ jobs:
     environment:
       NODE_ENV: test
       DATABASE_URL: process.env.DATABASE_URL_TEST
+      COVERALLS_PARALLEL: true
     steps:
       - checkout
       - run: npm install
