@@ -1,4 +1,6 @@
-version: 2
+version: 2.1
+orbs:
+  coveralls: coveralls/coveralls@3.0.6
 jobs:
   build:
     docker:
@@ -26,6 +28,7 @@ jobs:
       - run: # run ccode overage report
           name: code-coverage
           command: npm run coverage
+        - coveralls/upload
       - store_artifacts: # special step to save test results as as artifact
           # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
           path: test-results
