@@ -25,7 +25,7 @@ jobs:
       - run: # run tests
           name: test
           command: npm run test
-      - run: # run code coverage report
+      - run: # run code coverage reports
           name: code-coverage
           command: npm run coverage
       - coveralls/upload
