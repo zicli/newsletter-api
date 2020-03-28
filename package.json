@@ -1,0 +1,67 @@
+{
+  "name": "newsletter-api",
+  "version": "1.0.0",
+  "description": "open source newsletter api",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "start:dev": "nodemon --exec babel-node ./src/index.js",
+    "start": "node dist/index.js",
+    "build": "babel src -d dist",
+    "migrate:reset": "sequelize db:migrate:undo:all",
+    "migrate": "sequelize db:migrate ",
+    "prestart": "npm run migrate",
+    "pretest": "cross-env NODE_ENV=test npm run migrate:reset && cross-env NODE_ENV=test npm run migrate",
+    "test": "cross-env NODE_ENV=test nyc --reporter=text --reporter=html mocha src/test/*.js --timeout 10000 -c --require @babel/register --exit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zicli/newsletter-api.git"
+  },
+  "keywords": [
+    "newsletter",
+    "api",
+    "graphql"
+  ],
+  "author": "Zicli Synergy Software Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zicli/newsletter-api/issues"
+  },
+  "homepage": "https://github.com/zicli/newsletter-api#readme",
+  "dependencies": {
+    "apollo-server-express": "^2.11.0",
+    "bcryptjs": "^2.4.3",
+    "chai": "^4.2.0",
+    "cross-env": "^5.2.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-graphql": "^0.9.0",
+    "graphql": "^14.6.0",
+    "graphql-iso-date": "^3.6.1",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^7.18.2",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.21.5",
+    "sequelize-cli": "^5.5.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/node": "^7.6.2",
+    "@babel/polyfill": "^7.4.4",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/register": "^7.5.5",
+    "chai-http": "^4.3.0",
+    "coveralls": "^3.0.6",
+    "eslint": "^6.2.2",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "mocha": "^7.1.1",
+    "mocha-lcov-reporter": "^1.3.0",
+    "nyc": "^14.1.1",
+    "supertest": "^4.0.2"
+  }
+}
