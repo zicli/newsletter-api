@@ -9,7 +9,6 @@ jobs:
     environment:
       NODE_ENV: test
       DATABASE_URL: process.env.DATABASE_URL_TEST
-      COVERALLS_PARALLEL: true
     steps:
       - checkout
       - run: npm install
@@ -42,3 +41,6 @@ jobs:
       - run: # test what branch we're on.
           name: "What branch am I on?"
           command: echo ${CIRCLE_BRANCH}
+notify:
+  webhooks:
+    - url: https://coveralls.io/webhook?repo_token=${process.env.COVERALLS_REPO_TOKEN}
