@@ -7,11 +7,11 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "cross-env NODE_ENV=test nyc --reporter=text --reporter=html mocha src/test/*.js --timeout 10000 -c --require @babel/register --exit",
+    "test": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text --reporter=html mocha src/test/*.js --timeout 10000 -c --require @babel/register --exit",
     "start:dev": "nodemon --exec babel-node ./src/index.js",
     "start": "node dist/index.js",
     "build": "babel src -d dist",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "coverage": "nyc report --reporter=lcov --reporter=text | coveralls",
     "migrate:reset": "sequelize db:migrate:undo:all",
     "migrate": "sequelize db:migrate ",
     "prestart": "npm run migrate",
