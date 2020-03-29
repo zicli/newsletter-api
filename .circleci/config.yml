@@ -1,6 +1,4 @@
-version: 2.1
-orbs:
-  coveralls: coveralls/coveralls@1.0.4
+version: 2
 jobs:
   build:
     docker:
@@ -9,7 +7,6 @@ jobs:
     environment:
       NODE_ENV: test
       DATABASE_URL: process.env.DATABASE_URL_TEST
-      COVERALLS_PARALLEL: true
     steps:
       - checkout
       - run: npm install
@@ -26,10 +23,9 @@ jobs:
       - run: # run tests
           name: test
           command: npm run test
-      - run: # run code coverage report
-          name: code-coverage
-          command: npm run coverage
-      - coveralls/upload
+      # - run: # run coverage report
+      #     name: code-coverage
+      #     command: npm run coverage
       - store_artifacts: # special step to save test results as as artifact
           # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
           path: test-results
