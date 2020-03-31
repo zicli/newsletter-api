@@ -20,7 +20,20 @@ npm i
 # run development server @localhost:3000
 npm run start:dev
 ```
+## :microscope: Testing
+```bash
+# run application tests
+npm run test
+```
+Api routes can also be tested on postman, or graphql dedicated test suite
+```bash
+# run development server
+npm run start:dev
 
+# open browser and navigate to localhost:3000/graphql
+# run graphql queries.
+# check docs folder for query examples
+```
 ## :books: Documentation
 - [Architecture](https://github.com/zicli/newsletter-api/blob/develop/docs/architecture.md)
 - [API Documentation](https://github.com/zicli/newsletter-api/blob/develop/docs/api.md)
