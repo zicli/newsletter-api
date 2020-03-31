@@ -6,6 +6,18 @@ const { ADMIN_KEY, SECRET } = env;
 
 const resolvers = {
   Query: {
+    /**
+     * @param {object} parent - graphql parent object
+     * @param {object} args - graphql input data
+     * @param {object} data - graphql input data
+     * destructured { email, password }
+     * @param {object} models - database model
+     * @returns {object} user - The user object
+     */
+    currentUser: async (parent, args, { admin, models }) => {
+      if (!admin) throw new Error('Not Authorized');
+      return models.Admin.findOne({ where: { id: admin.id } });
+    },
   },
 
   Mutation: {
@@ -50,6 +62,25 @@ const resolvers = {
       req.res.cookie('token', token, { maxAge: 70000000, httpOnly: true });
       return admin;
     },
+    /**
+     * @param {object} parent - graphql parent object
+     * @param {object} data - graphql input data
+     * destructured { email, password }
+     * @param {object} models - database model
+     * @returns {object} user - The user object
+     */
+    login: async (parent, { email, password }, { req, models }) => {
+      const admin = await models.Admin.findOne({ where: { email } });
+      if (!admin) throw new Error('Admin does not exist');
+      const passwordMatch = await bcrypt.compare(password, admin.password);
+      if (!passwordMatch) throw new Error('password is invalid');
+      const token = jwt.sign({
+        id: admin.id,
+        email: admin.email
+      }, SECRET, { expiresIn: '3d' });
+      req.res.cookie('token', token, { maxAge: 70000000, httpOnly: true });
+      return admin;
+    }
   },
 };
 
