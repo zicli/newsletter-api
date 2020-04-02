@@ -41,7 +41,7 @@ These specifications are open and subject to change.
   "updatedAt": DATE
 }
 
-// newsletter
+// post
 {
   "id": INTEGER,
   "header": STRING,

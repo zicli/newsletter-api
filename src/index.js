@@ -34,8 +34,8 @@ const app = express();
 server.applyMiddleware({ app });
 
 // sync and authenticate all db models
-models.sequelize.authenticate();
-models.sequelize.sync();
+// models.sequelize.authenticate();
+// models.sequelize.sync();
 
 app.listen(3000, () => console.log(`listening on port http://localhost:3000${server.graphqlPath} 🚀 `));
 
