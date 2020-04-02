@@ -37,6 +37,7 @@ server.applyMiddleware({ app });
 // models.sequelize.authenticate();
 // models.sequelize.sync();
 
+// eslint-disable-next-line no-console
 app.listen(3000, () => console.log(`listening on port http://localhost:3000${server.graphqlPath} 🚀 `));
 
 export default app;

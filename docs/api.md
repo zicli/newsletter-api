@@ -119,3 +119,19 @@ response
     }
 }
 ```
+
+### Delete a post
+request
+```javascript
+mutation {
+    deletePost(id: 1) 
+}
+```
+response
+```json
+{
+    "data": {
+        "deletePost": "post with id 5 deleted successfully"
+    }
+}
+```
