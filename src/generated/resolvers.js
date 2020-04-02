@@ -7,6 +7,7 @@ const { ADMIN_KEY, SECRET } = env;
 const resolvers = {
   Query: {
     /**
+     * query current admin user
      * @param {object} parent - graphql parent object
      * @param {object} args - graphql input data
      * @param {object} data - graphql input data
@@ -22,6 +23,7 @@ const resolvers = {
 
   Mutation: {
     /**
+     * admin signup
      * @param {object} parent - graphql parent object
      * @param {object} data - graphql input data
      * destructured { username, email, password, firstName, lastName }
@@ -59,10 +61,12 @@ const resolvers = {
         id: admin.id,
         email: admin.email
       }, SECRET, { expiresIn: '3d' });
+      admin.token = token;
       req.res.cookie('token', token, { maxAge: 70000000, httpOnly: true });
       return admin;
     },
     /**
+     * admin login
      * @param {object} parent - graphql parent object
      * @param {object} data - graphql input data
      * destructured { email, password }
@@ -78,9 +82,35 @@ const resolvers = {
         id: admin.id,
         email: admin.email
       }, SECRET, { expiresIn: '3d' });
+      admin.token = token;
       req.res.cookie('token', token, { maxAge: 70000000, httpOnly: true });
       return admin;
-    }
+    },
+    /**
+     * add post
+     * @param {object} parent - graphql parent object
+     * @param {object} data - graphql input data
+     * destructured { email, password }
+     * @param {object} models - database model
+     * @returns {object} user - The user object
+     */
+    addPost: async (parent, {
+      title,
+      headerImage,
+      excerpt,
+      author,
+      content
+    }, { models }) => {
+      const slug = title.replace(/ /g, '-').toLowerCase();
+      return models.Post.create({
+        title,
+        headerImage,
+        excerpt,
+        slug,
+        author,
+        content
+      });
+    },
   },
 };
 

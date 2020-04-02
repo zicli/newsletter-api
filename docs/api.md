@@ -82,3 +82,40 @@ response
 }
 ```
 
+### Add a new Post
+request
+```javascript
+mutation {
+  addPost(
+      title: "Api Architecture",
+      headerImage: "www.headerImage.com/image.jpg",
+      excerpt: "<p>Designing Api Architecture</p>\n",
+      author: "Ben Simmone",
+      content: "<h1>Api Architecture</h1>\n"
+      ) {
+    id
+    title
+    headerImage
+    excerpt
+    slug
+    author
+    content
+  }
+}
+```
+response
+```json
+{
+    "data": {
+        "addPost": {
+            "id": 2,
+            "title": "Api Architecture",
+            "headerImage": "www.headerImage.com/image.jpg",
+            "excerpt": "<p>Designing Api Architecture</p>\n",
+            "slug": "api-architecture",
+            "author": "Ben Simmone",
+            "content": "<h1>Api Architecture</h1>\n"
+        }
+    }
+}
+```
