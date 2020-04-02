@@ -1,8 +1,10 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import env from '../config/env';
+import { Toolbox } from '../utils';
 
 const { ADMIN_KEY, SECRET } = env;
+const { errors } = Toolbox;
 
 const resolvers = {
   Query: {
@@ -15,8 +17,8 @@ const resolvers = {
      * @param {object} models - database model
      * @returns {object} user - The user object
      */
-    currentUser: async (parent, args, { admin, models }) => {
-      if (!admin) throw new Error('Not Authorized');
+    currentUser: async (parent, args, { req, admin, models }) => {
+      if (!admin) errors(req.res, 'Not Authorized', 403);
       return models.Admin.findOne({ where: { id: admin.id } });
     },
   },
@@ -41,9 +43,9 @@ const resolvers = {
       }, { req, models }) => {
       // check if user with email and password already exists
       let member = await models.Admin.findOne({ where: { username } });
-      if (member) throw new Error('username is taken');
+      if (member) errors(req.res, 'username is taken', 400);
       member = await models.Admin.findOne({ where: { email } });
-      if (member) throw new Error('Admin with email exists');
+      if (member) errors(req.res, 'Admin with email exists', 409);
       // check admin key
       if (adminKey !== ADMIN_KEY) throw new Error('Invalid admin key');
       // hash admin password
@@ -75,9 +77,9 @@ const resolvers = {
      */
     login: async (parent, { email, password }, { req, models }) => {
       const admin = await models.Admin.findOne({ where: { email } });
-      if (!admin) throw new Error('Admin does not exist');
+      if (!admin) errors(req.res, 'invalid login details', 400);
       const passwordMatch = await bcrypt.compare(password, admin.password);
-      if (!passwordMatch) throw new Error('password is invalid');
+      if (!passwordMatch) errors(req.res, 'invalid login details', 400);
       const token = jwt.sign({
         id: admin.id,
         email: admin.email
@@ -100,7 +102,8 @@ const resolvers = {
       excerpt,
       author,
       content
-    }, { models }) => {
+    }, { req, admin, models }) => {
+      if (!admin) errors(req.res, 'Not Authorized', 403);
       const slug = title.replace(/ /g, '-').toLowerCase();
       return models.Post.create({
         title,
@@ -111,6 +114,19 @@ const resolvers = {
         content
       });
     },
+    /**
+     * delete post
+     * @param {object} parent - graphql parent object
+     * @param {object} data - graphql input data
+     * destructured { email, password }
+     * @param {object} models - database model
+     * @returns {object} user - The user object
+     */
+    deletePost: async (parent, { id }, { req, admin, models }) => {
+      if (!admin) errors(req.res, 'Not Authorized', 403);
+      await models.Post.destroy({ where: { id } });
+      return `post with id ${id} deleted successfully`;
+    }
   },
 };
 
