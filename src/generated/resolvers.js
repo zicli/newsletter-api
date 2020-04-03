@@ -92,7 +92,7 @@ const resolvers = {
      * add post
      * @param {object} parent - graphql parent object
      * @param {object} data - graphql input data
-     * destructured { email, password }
+     * destructured { title, headerimage, excerpt, author, content }
      * @param {object} models - database model
      * @returns {object} user - The user object
      */
@@ -126,6 +126,38 @@ const resolvers = {
       if (!admin) errors(req.res, 'Not Authorized', 403);
       await models.Post.destroy({ where: { id } });
       return `post with id ${id} deleted successfully`;
+    },
+    /**
+     * edit a  post
+     * @param {object} parent - graphql parent object
+     * @param {object} data - graphql input data
+     * destructured { title, headerimage, excerpt, author, content }
+     * @param {object} models - database model
+     * @returns {object} user - The user object
+     */
+    editPost: async (parent, {
+      id,
+      title,
+      headerImage,
+      excerpt,
+      author,
+      content
+    }, {req, admin, models }) => {
+      if (!admin) errors(req.res, 'Not Authorized', 403);
+      const slug = title.replace(/ /g, '-').toLowerCase();
+      const updateData = {
+        title,
+        headerImage,
+        excerpt,
+        slug,
+        author,
+        content
+      };
+      const [rowaffected, [entity]] = await models.Post.update(
+        updateData, { returning: true, where: { id } }
+      );
+      if (!rowaffected) errors(req.res, 'post to be edited not found', 404);
+      return entity.dataValues;
     }
   },
 };

@@ -177,6 +177,125 @@ describe('Add Post', () => {
   });
 });
 
+describe('Edit Post', () => {
+  it('should successfuly edit a post', async () => {
+    const response = await chai
+      .request(server)
+      .post('/graphql')
+      .set('Cookie', `token=${token}`)
+      .send({
+        query: `mutation {
+          editPost(
+              id: ${postId}
+              title: "How to be greater",
+              headerImage: "www.headerImage.com/image.jpg",
+              excerpt: "<p>Being great is no easy feat, let me show you how to achievve this</p>\\n",
+              author: "Ben Simmone",
+              content: "<h1>Newsletter Api</h1>\\n<p>This is an architecture of a lightweight newsletter backend server used by the zicli site. This architecture is opensource, so its operation will be independent with admins, newsletter, comments(if neccessary), or likes.\\nThe specifications in this document are subject to change as it is an opensouce project.</p>\\n<h2>Goal</h2>\\n<p>This app aims at creating a simple and dynamic newsletter that can be rivaled with best newsletter apis around the world.</p>\\n<ul>\\n<li>It must be simple</li>\\n<li>It must be dynamic</li>\\n<li>It must be independent</li>\\n<li>It must be abstract.</li>\\n</ul>\\n"
+              ) {
+            id
+            title
+            headerImage
+            excerpt
+            slug
+            author
+            content
+          }
+        }`
+      });
+    expect(response).to.have.status(200);
+    expect(response.body.data).to.be.a('object');
+    expect(response.body.data.editPost.title).to.be.a('string');
+    expect(response.body.data.editPost.content).to.be.a('string');
+  });
+  it('should fail to edit a post if token is absent', async () => {
+    const response = await chai
+      .request(server)
+      .post('/graphql')
+      .send({
+        query: `mutation {
+        editPost(
+            id: ${postId}
+            title: "How to be greater",
+            headerImage: "www.headerImage.com/image.jpg",
+            excerpt: "<p>Being great is no easy feat, let me show you how to achievve this</p>\\n",
+            author: "Ben Simmone",
+            content: "<h1>Newsletter Api</h1>\\n<p>This is an architecture of a lightweight newsletter backend server used by the zicli site. This architecture is opensource, so its operation will be independent with admins, newsletter, comments(if neccessary), or likes.\\nThe specifications in this document are subject to change as it is an opensouce project.</p>\\n<h2>Goal</h2>\\n<p>This app aims at creating a simple and dynamic newsletter that can be rivaled with best newsletter apis around the world.</p>\\n<ul>\\n<li>It must be simple</li>\\n<li>It must be dynamic</li>\\n<li>It must be independent</li>\\n<li>It must be abstract.</li>\\n</ul>\\n"
+            ) {
+          id
+          title
+          headerImage
+          excerpt
+          slug
+          author
+          content
+        }
+      }`
+      });
+    expect(response).to.have.status(403);
+    expect(response.body.errors).to.be.a('array');
+    expect(response.body.errors[0].message).to.be.a('string');
+  });
+  it('should fail to edit a post if post parameters are in wrong format', async () => {
+    const response = await chai
+      .request(server)
+      .post('/graphql')
+      .set('Cookie', `token=${token}`)
+      .send({
+        query: `mutation {
+      editPost(
+          id: yyy
+          title: "How to be greater",
+          headerImage: "www.headerImage.com/image.jpg",
+          excerpt: "<p>Being great is no easy feat, let me show you how to achievve this</p>\\n",
+          author: "Ben Simmone",
+          content: "<h1>Newsletter Api</h1>\\n<p>This is an architecture of a lightweight newsletter backend server used by the zicli site. This architecture is opensource, so its operation will be independent with admins, newsletter, comments(if neccessary), or likes.\\nThe specifications in this document are subject to change as it is an opensouce project.</p>\\n<h2>Goal</h2>\\n<p>This app aims at creating a simple and dynamic newsletter that can be rivaled with best newsletter apis around the world.</p>\\n<ul>\\n<li>It must be simple</li>\\n<li>It must be dynamic</li>\\n<li>It must be independent</li>\\n<li>It must be abstract.</li>\\n</ul>\\n"
+          ) {
+        id
+        title
+        headerImage
+        excerpt
+        slug
+        author
+        content
+      }
+    }`
+      });
+    expect(response).to.have.status(400);
+    expect(response.body.errors).to.be.a('array');
+    expect(response.body.errors[0].message).to.be.a('string');
+  });
+  it('should fail to edit a post if post does not exist', async () => {
+    const response = await chai
+      .request(server)
+      .post('/graphql')
+      .set('Cookie', `token=${token}`)
+      .send({
+        query: `mutation {
+      editPost(
+          id: 100
+          title: "How to be greater",
+          headerImage: "www.headerImage.com/image.jpg",
+          excerpt: "<p>Being great is no easy feat, let me show you how to achievve this</p>\\n",
+          author: "Ben Simmone",
+          content: "<h1>Newsletter Api</h1>\\n<p>This is an architecture of a lightweight newsletter backend server used by the zicli site. This architecture is opensource, so its operation will be independent with admins, newsletter, comments(if neccessary), or likes.\\nThe specifications in this document are subject to change as it is an opensouce project.</p>\\n<h2>Goal</h2>\\n<p>This app aims at creating a simple and dynamic newsletter that can be rivaled with best newsletter apis around the world.</p>\\n<ul>\\n<li>It must be simple</li>\\n<li>It must be dynamic</li>\\n<li>It must be independent</li>\\n<li>It must be abstract.</li>\\n</ul>\\n"
+          ) {
+        id
+        title
+        headerImage
+        excerpt
+        slug
+        author
+        content
+      }
+    }`
+      });
+    expect(response).to.have.status(404);
+    expect(response.body.errors).to.be.a('array');
+    expect(response.body.errors[0].message).to.be.a('string');
+  });
+});
+
 describe('Delete Post', () => {
   it('should fail to delete a post if admin token is absent', async () => {
     const response = await chai
