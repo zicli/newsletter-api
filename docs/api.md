@@ -91,7 +91,7 @@ mutation {
       headerImage: "www.headerImage.com/image.jpg",
       excerpt: "<p>Designing Api Architecture</p>\n",
       author: "Ben Simmone",
-      content: "<h1>Api Architecture</h1>\n"
+      content: "<h1>Api Architecture content</h1>\n"
       ) {
     id
     title
@@ -114,7 +114,7 @@ response
             "excerpt": "<p>Designing Api Architecture</p>\n",
             "slug": "api-architecture",
             "author": "Ben Simmone",
-            "content": "<h1>Api Architecture</h1>\n"
+            "content": "<h1>Api Architecture content</h1>\n"
         }
     }
 }
@@ -132,6 +132,44 @@ response
 {
     "data": {
         "deletePost": "post with id 5 deleted successfully"
+    }
+}
+```
+
+### Edit a post
+request
+```javascript
+mutation {
+  editPost(
+      id: 2,
+      title: "Api Architecture",
+      headerImage: "www.headerImage.com/image.jpg",
+      excerpt: "<p>Designing Api Architecture</p>\n",
+      author: "Bola Winslow"
+      ) {
+    id
+    title
+    headerImage
+    excerpt
+    slug
+    author
+    content
+  }
+}
+```
+response
+```json
+{
+    "data": {
+        "addPost": {
+            "id": 2,
+            "title": "Api Architecture",
+            "headerImage": "www.headerImage.com/image.jpg",
+            "excerpt": "<p>Designing Api Architecture</p>\n",
+            "slug": "api-architecture",
+            "author": "Bola Winslow",
+            "content": "<h1>Api Architecture content</h1>\n"
+        }
     }
 }
 ```

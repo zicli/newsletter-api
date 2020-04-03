@@ -29,6 +29,7 @@ const typeDefs = gql`
     signup(username: String!, email: String!, password: String!, firstName: String!, lastName: String!, adminKey: String!): Admin!
     login(email: String!, password: String): Admin!
     addPost(title: String!, headerImage: String!, excerpt: String!, author: String!, content: String!): Post!
+    editPost(id: Int!, title: String, headerImage: String, excerpt: String, author: String, content: String): Post!
     deletePost(id: Int!): String!
   }
 `;
