@@ -41,16 +41,12 @@ const resolvers = {
         lastName,
         adminKey
       }, { req, models }) => {
-      // check if user with email and password already exists
       let member = await models.Admin.findOne({ where: { username } });
       if (member) errors(req.res, 'username is taken', 400);
       member = await models.Admin.findOne({ where: { email } });
       if (member) errors(req.res, 'Admin with email exists', 409);
-      // check admin key
       if (adminKey !== ADMIN_KEY) throw new Error('Invalid admin key');
-      // hash admin password
       const hashedPassword = await bcrypt.hash(password, 10);
-      // add admin to database
       const { dataValues: admin } = await models.Admin.create({
         firstName,
         lastName,
@@ -58,7 +54,6 @@ const resolvers = {
         email,
         password: hashedPassword
       });
-      // create token for user and add to response
       const token = jwt.sign({
         id: admin.id,
         email: admin.email
