@@ -167,7 +167,7 @@ response
             "headerImage": "www.headerImage.com/image.jpg",
             "excerpt": "<p>Designing Api Architecture</p>\n",
             "slug": "api-architecture",
-            "author": "BBola Winslow",
+            "author": "Bola Winslow",
             "content": "<h1>Api Architecture content</h1>\n"
         }
     }
