@@ -21,6 +21,15 @@ const resolvers = {
       if (!admin) errors(req.res, 'Not Authorized', 403);
       return models.Admin.findOne({ where: { id: admin.id } });
     },
+    /**
+     * query current admin user
+     * @param {object} parent - graphql parent object
+     * @param {object} args - graphql input data
+     * @param {object} data - graphql input data
+     * @param {object} models - database model
+     * @returns {object} post - The post object
+     */
+    getAllNewsletter: (parent, args, { models }) => models.Post.findAll({ where: {} }),
   },
 
   Mutation: {
@@ -137,7 +146,7 @@ const resolvers = {
       excerpt,
       author,
       content
-    }, {req, admin, models }) => {
+    }, { req, admin, models }) => {
       if (!admin) errors(req.res, 'Not Authorized', 403);
       const slug = title.replace(/ /g, '-').toLowerCase();
       const updateData = {

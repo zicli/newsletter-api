@@ -12,7 +12,8 @@ const typeDefs = gql`
   }
 
   type Query {
-    currentUser: Admin!
+    currentUser: Admin!,
+    getAllNewsletter: [Post]
   }
 
   type Post {
