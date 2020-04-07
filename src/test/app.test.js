@@ -16,7 +16,7 @@ describe('Admin Signup', () => {
       .request(server)
       .post('/graphql')
       .send({
-        query: `mutation { 
+        query: `mutation {
           signup(username: "dan", email: "dan@test.com", password: "password", firstName: "Daniel", lastName: "Fisher", adminKey: "${ADMIN_KEY}") {
             id
             username
@@ -37,7 +37,7 @@ describe('Admin Signup', () => {
       .request(server)
       .post('/graphql')
       .send({
-        query: `mutation { 
+        query: `mutation {
         signup(username: "dan", email: "dan@test.com", password: "password", firstName: "Daniel", lastName: "Fisher", adminKey: "${ADMIN_KEY}") {
           id
           username
@@ -57,7 +57,7 @@ describe('Admin Login', () => {
       .request(server)
       .post('/graphql')
       .send({
-        query: `mutation { 
+        query: `mutation {
           login(email: "dan@test.com", password: "password") {
             id
             username
@@ -79,7 +79,7 @@ describe('Admin Login', () => {
       .request(server)
       .post('/graphql')
       .send({
-        query: `mutation { 
+        query: `mutation {
           login(email: "dan@test.com", password: "passwfford") {
             id
             username
@@ -334,5 +334,49 @@ describe('Delete Post', () => {
     expect(response).to.have.status(200);
     expect(response.body.data).to.be.a('object');
     expect(response.body.data.deletePost).to.be.a('string');
+  });
+});
+
+describe('Users Can View All Posts', () => {
+  it('Users can display all post in the database without token', async () => {
+    const response = await chai
+      .request(server)
+      .post('/graphql')
+      .send({
+        query: `query {
+          getAllNewsletter{
+          id
+            title
+            headerImage
+            excerpt
+            slug
+            author
+            content
+          }
+        }`
+      });
+    expect(response).to.have.status(200);
+    expect(response.body.data).to.be.a('object');
+  });
+  it('Admin can display all post in the database with token', async () => {
+    const response = await chai
+      .request(server)
+      .post('/graphql')
+      .set('Cookie', `token=${token}`)
+      .send({
+        query: `query {
+          getAllNewsletter{
+          id
+            title
+            headerImage
+            excerpt
+            slug
+            author
+            content
+          }
+        }`
+      });
+    expect(response).to.have.status(200);
+    expect(response.body.data).to.be.a('object');
   });
 });

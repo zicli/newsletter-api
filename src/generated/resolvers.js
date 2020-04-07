@@ -22,14 +22,13 @@ const resolvers = {
       return models.Admin.findOne({ where: { id: admin.id } });
     },
     /**
-     * query current admin user
+     * query all post in the database
      * @param {object} parent - graphql parent object
      * @param {object} args - graphql input data
-     * @param {object} data - graphql input data
      * @param {object} models - database model
-     * @returns {object} post - The post object
+     * @returns {array} post - The post array
      */
-    getAllNewsletter: (parent, args, { models }) => models.Post.findAll({ where: {} }),
+    getAllNewsletter: (parent, args, { models }) => models.Post.findAll({}),
   },
 
   Mutation: {
