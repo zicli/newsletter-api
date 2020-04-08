@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { GraphQLDate } from 'graphql-iso-date';
 import env from '../config/env';
 import { Toolbox } from '../utils';
 
@@ -7,6 +8,8 @@ const { ADMIN_KEY, SECRET } = env;
 const { errors } = Toolbox;
 
 const resolvers = {
+
+  Date: GraphQLDate,
   Query: {
     /**
      * query current admin user

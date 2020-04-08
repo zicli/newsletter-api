@@ -1,6 +1,7 @@
 import { gql } from 'apollo-server-express';
 
 const typeDefs = gql`
+scalar Date
 
   type Admin {
     id: Int!
@@ -24,6 +25,8 @@ const typeDefs = gql`
     slug: String!
     author: String!
     content: String!
+    createdAt: Date!
+    updatedAt: Date!
   }
 
   type Mutation {
