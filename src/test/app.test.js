@@ -296,6 +296,79 @@ describe('Edit Post', () => {
   });
 });
 
+
+describe('Users Can View a single Post', () => {
+  it('Users can display a single post in the database without token', async () => {
+    const response = await chai
+      .request(server)
+      .post('/graphql')
+      .send({
+        query: `query {
+          getOneNewsletter(id:${postId}){
+          id
+            title
+            headerImage
+            excerpt
+            slug
+            author
+            content
+            createdAt
+            updatedAt
+          }
+        }`
+      });
+    expect(response).to.have.status(200);
+    expect(response.body.data).to.be.a('object');
+  });
+  it('Admin can display a single post in the database with token', async () => {
+    const response = await chai
+      .request(server)
+      .post('/graphql')
+      .set('Cookie', `token=${token}`)
+      .send({
+        query: `query {
+          getOneNewsletter(id:${postId}){
+          id
+            title
+            headerImage
+            excerpt
+            slug
+            author
+            content
+            createdAt
+            updatedAt
+          }
+        }`
+      });
+    expect(response).to.have.status(200);
+    expect(response.body.data).to.be.a('object');
+  });
+  it('should fail if post is not found', async () => {
+    const response = await chai
+      .request(server)
+      .post('/graphql')
+      .send({
+        query: `query {
+          getOneNewsletter(id: 5){
+          id
+            title
+            headerImage
+            excerpt
+            slug
+            author
+            content
+            createdAt
+            updatedAt
+          }
+        }`
+      });
+    expect(response).to.have.status(404);
+    expect(response.body.errors).to.be.a('array');
+    expect(response.body.errors[0].message).to.be.a('string');
+    expect(response.body.errors[0].message).to.eql('Post Not Found!!');
+  });
+});
+
 describe('Delete Post', () => {
   it('should fail to delete a post if admin token is absent', async () => {
     const response = await chai

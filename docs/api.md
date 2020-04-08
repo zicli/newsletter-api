@@ -233,3 +233,40 @@ response
     }
 }
 ```
+
+### Query A SINGLE POST
+request
+```javascript
+ {
+  getOneNewsletter(id: 8){
+	id
+    title
+    headerImage
+    excerpt
+    slug
+    author
+    content
+    createdAt
+    updatedAt
+  }
+}
+
+```
+response
+```json
+{
+    "data": {
+        "getOneNewsletter": {
+            "id": 8,
+            "title": "Testing Documentary",
+            "headerImage": "www.headerImage.com/image.jpg",
+            "excerpt": "<p>Designing Api Architecture</p>\n",
+            "slug": "testing-documentary",
+            "author": "Tochi",
+            "content": "<h1>NewsLetter Documentary</h1>\n",
+            "createdAt": "2020-04-08",
+            "updatedAt": "2020-04-08"
+        }
+    }
+}
+```

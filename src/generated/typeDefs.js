@@ -15,6 +15,7 @@ scalar Date
   type Query {
     currentUser: Admin!,
     getAllNewsletter: [Post]
+    getOneNewsletter(id: Int!): Post!
   }
 
   type Post {
