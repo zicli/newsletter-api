@@ -32,6 +32,18 @@ const resolvers = {
      * @returns {array} post - The post array
      */
     getAllNewsletter: (parent, args, { models }) => models.Post.findAll({}),
+    /**
+     * query one simgle post
+     * @param {object} parent - graphql parent object
+     * @param {object} args - graphql input data
+     * @param {object} models - database model
+     * @returns {array} post - The post array
+     */
+    getOneNewsletter: async (parent, { id }, { req, models }) => {
+      const post = await models.Post.findOne({ where: { id } });
+      if (!post) errors(req.res, 'Post Not Found!!', 404);
+      return post;
+    }
   },
 
   Mutation: {
