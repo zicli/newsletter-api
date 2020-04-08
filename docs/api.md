@@ -2,7 +2,7 @@
 request
 ```javascript
   signup(
-    username: "username", 
+    username: "username",
     email: "test@email.com",
     password: "password",
     firstName: "John",
@@ -22,7 +22,7 @@ response
   "data": {
     "signup": {
       "id": 1,
-      "username": "username", 
+      "username": "username",
       "email": "test@email.com",
       "firstName": "John",
       "lastName": "Doe",
@@ -91,7 +91,9 @@ mutation {
       headerImage: "www.headerImage.com/image.jpg",
       excerpt: "<p>Designing Api Architecture</p>\n",
       author: "Ben Simmone",
-      content: "<h1>Api Architecture content</h1>\n"
+      content: "<h1>Api Architecture content</h1>\n",
+      createdAt: "2020-04-07",
+      updatedAt: "2020-04-07"
       ) {
     id
     title
@@ -100,6 +102,8 @@ mutation {
     slug
     author
     content
+    createdAt
+    updatedAt
   }
 }
 ```
@@ -114,7 +118,9 @@ response
             "excerpt": "<p>Designing Api Architecture</p>\n",
             "slug": "api-architecture",
             "author": "Ben Simmone",
-            "content": "<h1>Api Architecture content</h1>\n"
+            "content": "<h1>Api Architecture content</h1>\n",
+            "createdAt": "2020-04-07",
+            "updatedAt": "2020-04-07"
         }
     }
 }
@@ -124,14 +130,14 @@ response
 request
 ```javascript
 mutation {
-    deletePost(id: 1) 
+    deletePost(id: 1)
 }
 ```
 response
 ```json
 {
     "data": {
-        "deletePost": "post with id 5 deleted successfully"
+        "deletePost": "post with id 1 deleted successfully"
     }
 }
 ```
@@ -154,6 +160,8 @@ mutation {
     slug
     author
     content
+    createdAt
+    updatedAt
   }
 }
 ```
@@ -168,8 +176,60 @@ response
             "excerpt": "<p>Designing Api Architecture</p>\n",
             "slug": "api-architecture",
             "author": "Bola Winslow",
-            "content": "<h1>Api Architecture content</h1>\n"
+            "content": "<h1>Api Architecture content</h1>\n",
+            "createdAt": "2020-04-07",
+            "updatedAt": "2020-04-07"
         }
+    }
+}
+```
+
+### Query All POST
+request
+```javascript
+ {
+  getAllNewsletter{
+	id
+    title
+    headerImage
+    excerpt
+    slug
+    author
+    content
+    createdAt
+    updatedAt
+  }
+}
+
+```
+response
+```json
+{
+    "data": {
+        "getAllNewsletter": [
+            {
+                "id": 6,
+                "title": "NewsLetter Documentary",
+                "headerImage": "www.headerImage.com/image.jpg",
+                "excerpt": "<p>Designing Api Architecture</p>\n",
+                "slug": "newsletter-documentary",
+                "author": "Tochi",
+                "content": "<h1>NewsLetter Documentary</h1>\n",
+                "createdAt": "2020-04-07",
+                "updatedAt": "2020-04-07"
+            },
+            {
+                "id": 8,
+                "title": "Testing Documentary",
+                "headerImage": "www.headerImage.com/image.jpg",
+                "excerpt": "<p>Designing Api Architecture</p>\n",
+                "slug": "testing-documentary",
+                "author": "Tochi",
+                "content": "<h1>NewsLetter Documentary</h1>\n",
+                "createdAt": "2020-04-08",
+                "updatedAt": "2020-04-08"
+            }
+        ]
     }
 }
 ```

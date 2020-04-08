@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { GraphQLDate } from 'graphql-iso-date';
 import env from '../config/env';
 import { Toolbox } from '../utils';
 
@@ -7,6 +8,8 @@ const { ADMIN_KEY, SECRET } = env;
 const { errors } = Toolbox;
 
 const resolvers = {
+
+  Date: GraphQLDate,
   Query: {
     /**
      * query current admin user
@@ -21,6 +24,14 @@ const resolvers = {
       if (!admin) errors(req.res, 'Not Authorized', 403);
       return models.Admin.findOne({ where: { id: admin.id } });
     },
+    /**
+     * query all post in the database
+     * @param {object} parent - graphql parent object
+     * @param {object} args - graphql input data
+     * @param {object} models - database model
+     * @returns {array} post - The post array
+     */
+    getAllNewsletter: (parent, args, { models }) => models.Post.findAll({}),
   },
 
   Mutation: {
@@ -137,7 +148,7 @@ const resolvers = {
       excerpt,
       author,
       content
-    }, {req, admin, models }) => {
+    }, { req, admin, models }) => {
       if (!admin) errors(req.res, 'Not Authorized', 403);
       const slug = title.replace(/ /g, '-').toLowerCase();
       const updateData = {
