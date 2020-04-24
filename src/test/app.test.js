@@ -417,7 +417,7 @@ describe('Users Can View All Posts', () => {
       .post('/graphql')
       .send({
         query: `query {
-          getAllNewsletter{
+          getAllNewsletters{
           id
             title
             headerImage
@@ -438,7 +438,7 @@ describe('Users Can View All Posts', () => {
       .set('Cookie', `token=${token}`)
       .send({
         query: `query {
-          getAllNewsletter{
+          getAllNewsletters{
           id
             title
             headerImage
