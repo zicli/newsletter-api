@@ -1,20 +1,11 @@
 /* eslint-disable prefer-destructuring */
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
-import jwt from 'jsonwebtoken';
+
 import { typeDefs, resolvers } from './generated';
 import models from './models';
-import env from './config/env';
+import { Toolbox } from './utils';
 
-// middleware
-const jwtCheck = (token) => {
-  try {
-    if (token) return jwt.verify(token, env.SECRET);
-    return null;
-  } catch (error) {
-    return null;
-  }
-};
 
 // apollo server
 const server = new ApolloServer({
@@ -24,7 +15,7 @@ const server = new ApolloServer({
     let token;
     if (req.headers.cookie) token = req.headers.cookie.split('=')[1];
     if (req.headers.authorization) token = req.headers.authorization.split(' ')[1];
-    const admin = jwtCheck(token);
+    const admin = Toolbox.jwtCheck(token);
     return { req, admin, models };
   }
 });

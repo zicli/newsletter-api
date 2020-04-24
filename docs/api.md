@@ -188,7 +188,7 @@ response
 request
 ```javascript
  {
-  getAllNewsletter{
+  getAllNewsletters{
 	id
     title
     headerImage
@@ -206,7 +206,7 @@ response
 ```json
 {
     "data": {
-        "getAllNewsletter": [
+        "getAllNewsletters": [
             {
                 "id": 6,
                 "title": "NewsLetter Documentary",
