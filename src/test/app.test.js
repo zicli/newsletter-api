@@ -453,3 +453,44 @@ describe('Users Can View All Posts', () => {
     expect(response.body.data).to.be.a('object');
   });
 });
+
+describe('Add Subscriber Email', () => {
+  it('should successfully add a subscriber', async () => {
+    const response = await chai
+      .request(server)
+      .post('/graphql')
+      .send({
+        query: `mutation {
+          addSubscriber(
+            email: "tozo23@gmail.com"
+          ){
+            id
+            email
+            createdAt
+            updatedAt
+          }
+        }`
+      });
+    expect(response).to.have.status(200);
+    expect(response.body.data).to.be.a('object');
+    expect(response.body.data.addSubscriber.email).to.be.a('string');
+  });
+  it('should fail to add subscriber if input parameter is missing', async () => {
+    const response = await chai
+      .request(server)
+      .post('/graphql')
+      .send({
+        query: `mutation {
+          addSubscriber(
+          ){
+            id
+            email
+            createdAt
+            updatedAt
+          }
+        }`
+      });
+    expect(response.body.errors).to.be.a('array');
+    expect(response.body.errors[0].message).to.be.a('string');
+  });
+});
