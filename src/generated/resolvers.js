@@ -2,6 +2,7 @@ import { GraphQLDate } from 'graphql-iso-date';
 import {
   Authorizations,
   Newsletters,
+  Subscribers
 } from '../controllers';
 
 const {
@@ -16,6 +17,10 @@ const {
   deletePost,
   editPost,
 } = Newsletters;
+
+const {
+  addSubscriber
+} = Subscribers;
 
 const resolvers = {
 
@@ -34,6 +39,7 @@ const resolvers = {
     addPost,
     deletePost,
     editPost,
+    addSubscriber
   },
 };
 

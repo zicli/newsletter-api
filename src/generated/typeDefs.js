@@ -30,6 +30,13 @@ scalar Date
     updatedAt: Date!
   }
 
+  type Subscriber {
+    id: Int!
+    email: String!,
+    createdAt: Date!
+    updatedAt: Date!
+  }
+
   type Mutation {
     signup(
       username: String!,
@@ -62,6 +69,10 @@ scalar Date
     ): Post!
 
     deletePost(id: Int!): String!
+
+    addSubscriber(
+      email: String!
+    ): Subscriber!
   }
 `;
 
