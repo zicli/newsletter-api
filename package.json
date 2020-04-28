@@ -33,6 +33,7 @@
   },
   "homepage": "https://github.com/zicli/newsletter-api#readme",
   "dependencies": {
+    "@sendgrid/mail": "^6.4.0",
     "apollo-server-express": "^2.11.0",
     "bcryptjs": "^2.4.3",
     "chai": "^4.2.0",
