@@ -1,11 +1,10 @@
 
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 import env from '../config/env';
-import { Toolbox } from '../utils';
+import { Toolbox, Mailer } from '../utils';
 
-const { ADMIN_KEY, SECRET } = env;
+const { ADMIN_KEY, SECRET, CLIENT_URL } = env;
 const { errors } = Toolbox;
+const { sendNewsletterEmail } = Mailer;
 
 const Newsletters = {
 
@@ -16,7 +15,7 @@ const Newsletters = {
    * @param {object} models - database model
    * @returns {array} post - The post array
    */
-  async getAllNewsletters(parent, args, { models }) { models.Post.findAll({}); },
+  async getAllNewsletters(parent, args, { models }) { return models.Post.findAll(); },
 
   /**
    * query one simgle post
@@ -47,7 +46,7 @@ const Newsletters = {
   }, { req, admin, models }) {
     if (!admin) errors(req.res, 'Not Authorized', 403);
     const slug = title.replace(/ /g, '-').toLowerCase();
-    return models.Post.create({
+    const post = await models.Post.create({
       title,
       headerImage,
       excerpt,
@@ -55,6 +54,15 @@ const Newsletters = {
       author,
       content
     });
+
+    // TODO: uncomment for production
+    // const subscriber = await models.Subscriber.findAll({});
+    // const emails = subscriber.map((item) => item.email);
+    // const newsletterLink = `${CLIENT_URL}`;
+    // const email = await sendNewsletterEmail(emails, newsletterLink);
+    // TODO: delete bottom line for production
+    const email = true;
+    if (email) return post;
   },
 
   /**
