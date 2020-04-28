@@ -1,6 +1,4 @@
 
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 import env from '../config/env';
 import { Toolbox, Mailer } from '../utils';
 
@@ -57,10 +55,10 @@ const Newsletters = {
       content
     });
 
-    const subscriber = await models.Subscriber.findAll({});
-    const emails = subscriber.map((item) => item.email);
-    const newsletterLink = `${CLIENT_URL}`;
     // TODO: uncomment for production
+    // const subscriber = await models.Subscriber.findAll({});
+    // const emails = subscriber.map((item) => item.email);
+    // const newsletterLink = `${CLIENT_URL}`;
     // const email = await sendNewsletterEmail(emails, newsletterLink);
     // TODO: delete bottom line for production
     const email = true;

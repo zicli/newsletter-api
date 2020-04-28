@@ -27,7 +27,7 @@ const Mailer = {
       }
     };
     try {
-      await sendgrid.send(mail);
+      await sendgrid.sendMultiple(mail);
       return true;
     } catch (error) {
       return false;
