@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable prefer-destructuring */
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
@@ -5,6 +6,7 @@ import { ApolloServer } from 'apollo-server-express';
 import { typeDefs, resolvers } from './generated';
 import models from './models';
 import { Toolbox } from './utils';
+import env from './config/env';
 
 
 // apollo server
@@ -28,7 +30,7 @@ server.applyMiddleware({ app });
 // models.sequelize.authenticate();
 // models.sequelize.sync();
 
-// eslint-disable-next-line no-console
-app.listen(3000, () => console.log(`listening on port http://localhost:3000${server.graphqlPath} 🚀 `));
+const PORT = env.PORT || 3000;
+app.listen(PORT, () => console.log(`listening on port http://localhost:${PORT}${server.graphqlPath} 🚀 `));
 
 export default app;
