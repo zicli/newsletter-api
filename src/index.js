@@ -1,8 +1,8 @@
-/* eslint-disable no-console */
 /* eslint-disable prefer-destructuring */
+/* eslint-disable no-console */
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
-
+import cors from 'cors';
 import { typeDefs, resolvers } from './generated';
 import models from './models';
 import { Toolbox } from './utils';
@@ -25,6 +25,9 @@ const server = new ApolloServer({
 // server
 const app = express();
 server.applyMiddleware({ app });
+
+// allow cross-origin
+app.use(cors());
 
 // sync and authenticate all db models
 // models.sequelize.authenticate();
