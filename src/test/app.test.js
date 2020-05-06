@@ -462,7 +462,7 @@ describe('Add Subscriber Email', () => {
       .send({
         query: `mutation {
           addSubscriber(
-            email: "tozo2345@gmail.com"
+            email: "ozurumbatochukwu@yahoo.com"
           ){
             id
             email
