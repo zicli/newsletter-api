@@ -462,7 +462,7 @@ describe('Add Subscriber Email', () => {
       .send({
         query: `mutation {
           addSubscriber(
-            email: "tozo23@gmail.com"
+            email: "ozurumbatochukwu@yahoo.com"
           ){
             id
             email
@@ -482,6 +482,25 @@ describe('Add Subscriber Email', () => {
       .send({
         query: `mutation {
           addSubscriber(
+          ){
+            id
+            email
+            createdAt
+            updatedAt
+          }
+        }`
+      });
+    expect(response.body.errors).to.be.a('array');
+    expect(response.body.errors[0].message).to.be.a('string');
+  });
+  it('should fail to add subscriber if input parameter is missing', async () => {
+    const response = await chai
+      .request(server)
+      .post('/graphql')
+      .send({
+        query: `mutation {
+          addSubscriber(
+            email: ''
           ){
             id
             email
