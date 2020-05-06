@@ -1,7 +1,8 @@
 
-import { Toolbox } from '../utils';
+import { Toolbox, Mailer } from '../utils';
 
 const { errors } = Toolbox;
+const { sendNewSubscriberMessage } = Mailer;
 
 const Subscribers = {
 
@@ -16,11 +17,14 @@ const Subscribers = {
   async addSubscriber(parent, {
     email
   }, { req, models }) {
+    if (!email) return errors(req.res, 'Please Type in an Email', 400);
     const subscriber = await models.Subscriber.findOne({ where: { email } });
     if (subscriber) return errors(req.res, 'Email already exist!', 400);
-    return models.Subscriber.create({
+    const newSubcriber = await models.Subscriber.create({
       email
     });
+    const emailSent = await sendNewSubscriberMessage(email);
+    if (emailSent) return newSubcriber;
   }
 };
 

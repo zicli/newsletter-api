@@ -10,6 +10,28 @@ sendgrid.setApiKey(SENDGRID_KEY);
 
 const Mailer = {
   /**
+   * send welcome message to subscribers
+   * @param {object} req
+   * @param {Array} emails
+   * @param {URL} newsletterLink
+   * @returns {Promise<boolean>} - Returns true if mail is sent, false if not
+   * @memberof Mailer
+   */
+  async sendNewSubscriberMessage(email) {
+    const mail = {
+      to: email,
+      from: ADMIN_EMAIL,
+      templateId: 'd-8a43cf0796bd4297b917ab6d5951884b',
+    };
+    try {
+      await sendgrid.sendMultiple(mail);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  },
+
+  /**
    * send newsletter to subscribers
    * @param {object} req
    * @param {Array} emails
