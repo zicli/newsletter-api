@@ -513,3 +513,45 @@ describe('Add Subscriber Email', () => {
     expect(response.body.errors[0].message).to.be.a('string');
   });
 });
+
+
+describe('Remove Subscribers', () => {
+  it('should fail to delete a post if admin token is absent', async () => {
+    const response = await chai
+      .request(server)
+      .post('/graphql')
+      .send({
+        query: `mutation {
+          deletePost(id: ${postId})
+        }`
+      });
+    expect(response.body.errors).to.be.a('array');
+    expect(response.body.errors[0].message).to.be.a('string');
+  });
+  it('should fail to delete a post if parameter is in wrong format', async () => {
+    const response = await chai
+      .request(server)
+      .post('/graphql')
+      .send({
+        query: `mutation {
+          deletePost(id: "drfr")
+        }`
+      });
+    expect(response.body.errors).to.be.a('array');
+    expect(response.body.errors[0].message).to.be.a('string');
+  });
+  it('should successfully delete a post', async () => {
+    const response = await chai
+      .request(server)
+      .post('/graphql')
+      .set('Cookie', `token=${token}`)
+      .send({
+        query: `mutation {
+          deletePost(id: ${postId})
+        }`
+      });
+    expect(response).to.have.status(200);
+    expect(response.body.data).to.be.a('object');
+    expect(response.body.data.deletePost).to.be.a('string');
+  });
+});

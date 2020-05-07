@@ -51,6 +51,7 @@ scalar Date
       email: String!,
       password: String!
     ): Admin!
+
     addPost(
       title: String!,
       headerImage: String!,
@@ -73,6 +74,9 @@ scalar Date
     addSubscriber(
       email: String!
     ): Subscriber!
+
+    removeSubscriber(
+      email: String!): String!
   }
 `;
 
