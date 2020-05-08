@@ -44,12 +44,14 @@ const Mailer = {
    * @memberof Mailer
    */
   async sendNewsletterEmail(emails, newsletterLink) {
+    const unsubcribeLink = `${CLIENT_URL}/unsubscribe`;
     const mail = {
       to: emails,
       from: ADMIN_EMAIL,
       templateId: 'd-e71e14ada4e24212a9c24b20851b9bff',
       dynamic_template_data: {
         newsletter_link: newsletterLink,
+        unsubcribe_link: unsubcribeLink,
       }
     };
     try {
