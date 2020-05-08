@@ -19,7 +19,8 @@ const {
 } = Newsletters;
 
 const {
-  addSubscriber
+  addSubscriber,
+  removeSubscriber
 } = Subscribers;
 
 const resolvers = {
@@ -39,7 +40,8 @@ const resolvers = {
     addPost,
     deletePost,
     editPost,
-    addSubscriber
+    addSubscriber,
+    removeSubscriber
   },
 };
 

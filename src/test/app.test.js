@@ -455,7 +455,7 @@ describe('Users Can View All Posts', () => {
 });
 
 describe('Add Subscriber Email', () => {
-  it('should successfully add a subscriber', async () => {
+  it('should successfully add a subscriber without a token', async () => {
     const response = await chai
       .request(server)
       .post('/graphql')
@@ -463,6 +463,27 @@ describe('Add Subscriber Email', () => {
         query: `mutation {
           addSubscriber(
             email: "ozurumbatochukwu@yahoo.com"
+          ){
+            id
+            email
+            createdAt
+            updatedAt
+          }
+        }`
+      });
+    expect(response).to.have.status(200);
+    expect(response.body.data).to.be.a('object');
+    expect(response.body.data.addSubscriber.email).to.be.a('string');
+  });
+  it('should successfully add a subscriber with a token', async () => {
+    const response = await chai
+      .request(server)
+      .post('/graphql')
+      .set('Cookie', `token=${token}`)
+      .send({
+        query: `mutation {
+          addSubscriber(
+            email: "testtoken@yahoo.com"
           ){
             id
             email
@@ -511,5 +532,78 @@ describe('Add Subscriber Email', () => {
       });
     expect(response.body.errors).to.be.a('array');
     expect(response.body.errors[0].message).to.be.a('string');
+  });
+});
+
+
+describe('Remove Subscribers', () => {
+  before(async () => {
+    await chai
+      .request(server)
+      .post('/graphql')
+      .send({
+        query: `mutation {
+          addSubscriber(
+            email: "tueloper@gmail.com"
+          ){
+            id
+            email
+            createdAt
+            updatedAt
+          }
+        }`
+      });
+  });
+  it('should fail to remove a subscriber if email does not exist', async () => {
+    const response = await chai
+      .request(server)
+      .post('/graphql')
+      .send({
+        query: `mutation {
+          removeSubscriber(email: "testError@gmail.com")
+        }`
+      });
+    expect(response.body.errors).to.be.a('array');
+    expect(response.body.errors[0].message).to.be.a('string');
+  });
+  it('should fail to remove a subscriber if parameter is not available', async () => {
+    const response = await chai
+      .request(server)
+      .post('/graphql')
+      .send({
+        query: `mutation {
+          removeSubscriber(email: "")
+        }`
+      });
+    expect(response.body.errors).to.be.a('array');
+    expect(response.body.errors[0].message).to.be.a('string');
+  });
+  it('should successfully remove a subscriber with token', async () => {
+    const response = await chai
+      .request(server)
+      .post('/graphql')
+      .set('Cookie', `token=${token}`)
+      .send({
+        query: `mutation {
+          removeSubscriber(email: "ozurumbatochukwu@yahoo.com")
+        }`
+      });
+    expect(response).to.have.status(200);
+    expect(response.body.data).to.be.a('object');
+    expect(response.body.data.removeSubscriber).to.be.a('string');
+  });
+  it('should successfully remove a subscriber without a token', async () => {
+    const response = await chai
+      .request(server)
+      .post('/graphql')
+      .set('Cookie', `token=${token}`)
+      .send({
+        query: `mutation {
+          removeSubscriber(email: "tueloper@gmail.com")
+        }`
+      });
+    expect(response).to.have.status(200);
+    expect(response.body.data).to.be.a('object');
+    expect(response.body.data.removeSubscriber).to.be.a('string');
   });
 });
