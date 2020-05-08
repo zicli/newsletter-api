@@ -18,7 +18,7 @@ const Mailer = {
    * @memberof Mailer
    */
   async sendNewSubscriberMessage(email) {
-    const unsubcribeLink = `${CLIENT_URL}/unsubscribe`;
+    const unsubcribeLink = `${CLIENT_URL}/unsubscribe?email=${email}`;
     const mail = {
       to: email,
       from: ADMIN_EMAIL,
@@ -44,18 +44,18 @@ const Mailer = {
    * @memberof Mailer
    */
   async sendNewsletterEmail(emails, newsletterLink) {
-    const unsubcribeLink = `${CLIENT_URL}/unsubscribe`;
-    const mail = {
-      to: emails,
+    const mail = emails.map((email) => ({
+      to: email,
       from: ADMIN_EMAIL,
       templateId: 'd-e71e14ada4e24212a9c24b20851b9bff',
       dynamic_template_data: {
         newsletter_link: newsletterLink,
-        unsubcribe_link: unsubcribeLink,
+        unsubcribe_link: `${CLIENT_URL}/unsubscribe?email=${email}`
       }
-    };
+    }));
+
     try {
-      await sendgrid.sendMultiple(mail);
+      await sendgrid.send(mail);
       return true;
     } catch (error) {
       return false;
