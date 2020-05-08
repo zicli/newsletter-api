@@ -3,7 +3,7 @@ import sendgrid from '@sendgrid/mail';
 import env from '../config/env';
 
 const {
-  ADMIN_EMAIL, SENDGRID_KEY
+  ADMIN_EMAIL, SENDGRID_KEY, CLIENT_URL
 } = env;
 
 sendgrid.setApiKey(SENDGRID_KEY);
@@ -18,10 +18,14 @@ const Mailer = {
    * @memberof Mailer
    */
   async sendNewSubscriberMessage(email) {
+    const unsubcribeLink = `${CLIENT_URL}/unsubscribe`;
     const mail = {
       to: email,
       from: ADMIN_EMAIL,
       templateId: 'd-8a43cf0796bd4297b917ab6d5951884b',
+      dynamic_template_data: {
+        unsubcribe_link: unsubcribeLink,
+      }
     };
     try {
       await sendgrid.sendMultiple(mail);

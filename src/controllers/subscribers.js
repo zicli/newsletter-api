@@ -19,7 +19,7 @@ const Subscribers = {
   }, { req, models }) {
     if (!email) return errors(req.res, 'Please Type in an Email', 400);
     const subscriber = await models.Subscriber.findOne({ where: { email } });
-    if (subscriber) return errors(req.res, 'This Email Already Exist!', 400);
+    if (subscriber) return errors(req.res, 'You\'ve Subscribed Already', 400);
     const newSubcriber = await models.Subscriber.create({
       email
     });
